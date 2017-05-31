@@ -8,7 +8,7 @@ import sqlite3
 class DAO():
 
     def __init__(self):
-        conn = sqlite3.connect('touch.db')
+        conn = sqlite3.connect('tactile.db')
         self.db = conn.cursor()
 
     def check_table_exists(self, table_name):
@@ -38,4 +38,12 @@ class DAO():
         '''
           Method to insert data
         '''
-        self.db.execute("INSERT INTO sounds (picture, soundfile, xpos, ypos) VALUES (?,?,?,?)", (picture, audio, x, y))
+        try:
+            print("picture: " + picture + " audio: " + audio + "x: " + str(x) + " y: " + str(y))
+            conn = sqlite3.connect('tactile.db')
+            db = conn.cursor()
+
+            db.execute("INSERT INTO sounds (picture, soundfile, xpos, ypos) VALUES (?,?,?,?)", (picture, audio, x, y,))
+            conn.commit()
+        except Exception, e:
+            print e
