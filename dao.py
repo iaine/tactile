@@ -34,6 +34,20 @@ class DAO():
         except Exception,e:
             print (e)
 
+    def fetch_xy(self, image):
+        '''
+          Fetch the sound file linked to the tile number
+          @parameter tile, integer for the tile number
+        '''
+
+        try:
+            rows = []
+            for row in self.db.execute('SELECT xpos, ypos FROM sounds WHERE picture=?', (image,)):
+                rows.append({'x': row[0], 'y': row[1]})
+            return rows
+        except Exception,e:
+            print (e)
+
     def insert_data(self, picture, audio, x, y):
         '''
           Method to insert data
