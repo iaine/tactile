@@ -9,8 +9,6 @@ AUDIO_UPLOAD_FOLDER = 'audio'
 ALLOWED_EXTENSIONS_AUDIO = set(['mp3'])
 ALLOWED_EXTENSIONS_PIC = set(['jpg', 'png', 'jpeg'])
 
-coords = []
-
 app = Flask(__name__)
 app.config['IMAGE_UPLOAD_FOLDER'] = IMAGE_UPLOAD_FOLDER
 app.config['AUDIO_UPLOAD_FOLDER'] = AUDIO_UPLOAD_FOLDER
@@ -18,21 +16,25 @@ app.config['SECRET_KEY'] = '\x0bE\x85\xed\xb0\xa5\xda\x90\xb2\x94\xd0\x02\x96\xd
 
 #set up a global for audio. 
 
-@app.route('/<string>', methods=['POST'])
+@app.route('/<uid_str>', methods=['POST'])
 def query_picture_position(uid_str):
     '''
        Takes the (x,y) tuple from post and retrieves the audio if near
     '''
-    x = request.form['x']
-    y = request.form['y']
+    x = request.values['x']
+    y = request.values['y']
 
     pos_audio = check_audio(x,y)
-    if check_audio(x,y) is not None:
+    print(pos_audio)
+    if pos_audio is not None:
         play(pos_audio)
+    return uid_str
     
 
 def check_audio(x,y):
-    return "Hello"
+    audio = DAO().fetch(x,y)
+    if audio is not 'None' and audio is not None:
+       return audio
 
 def play(filename):
     return "Play Hello"
@@ -55,24 +57,27 @@ def upload_file(uid):
             flash('No selected file')
             return redirect(request.url)
         if file and allowed_file(file.filename, ALLOWED_EXTENSIONS_AUDIO):
-            DAO().insert_data(uid, filename, float(request.values["x"]), float(request.values["y"]))
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['AUDIO_UPLOAD_FOLDER'], filename))
+            DAO().insert_data(uid, filename, float(request.values["x"]), float(request.values["y"]))
             fname = None
-            for f in os.listdir("data"):
+            for f in os.listdir(app.config['IMAGE_UPLOAD_FOLDER']):
                 if f[:len(uid)] == uid:
                     fname = f
+            coords = DAO().fetch_xy(uid)
             return render_template('record.html', record=fname, coords=coords)
 
     if request.method == 'GET':
         fname = None
-        for f in os.listdir("data"):
+        for f in os.listdir(app.config['IMAGE_UPLOAD_FOLDER']):
             if f[:len(uid)] == uid:
                 fname = f
+        coords = DAO().fetch_xy(uid)
+        print(coords)
         return render_template('record.html', record=fname, coords=coords)
 
 def get_records():
-    data = os.listdir("data")
+    data = os.listdir(app.config['IMAGE_UPLOAD_FOLDER'])
     return [datum.split('.')[0] for datum in data]
 
 @app.route('/record', methods=['GET', 'POST'])
