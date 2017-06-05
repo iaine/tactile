@@ -16,19 +16,22 @@ app.config['SECRET_KEY'] = '\x0bE\x85\xed\xb0\xa5\xda\x90\xb2\x94\xd0\x02\x96\xd
 
 #set up a global for audio. 
 
-@app.route('/<uid_str>', methods=['POST'])
+@app.route('/<uid_str>', methods=['GET, POST'])
 def query_picture_position(uid_str):
     '''
        Takes the (x,y) tuple from post and retrieves the audio if near
     '''
-    x = request.values['x']
-    y = request.values['y']
+    if request.method == 'GET':
+        return render_template('touch.html')
+    if request.method == 'POST':
+        x = request.values['x']
+        y = request.values['y']
 
-    pos_audio = check_audio(x,y)
-    print(pos_audio)
-    if pos_audio is not None:
-        play(pos_audio)
-    return uid_str
+        pos_audio = check_audio(x,y)
+        print(pos_audio)
+        if pos_audio is not None:
+            play(pos_audio)
+        return uid_str
     
 
 def check_audio(x,y):
