@@ -43,7 +43,7 @@ var el = document.getElementsByTagName("canvas")[0];
   }
    // General Functions
   function filterItems(touches) {
-    return onGoingTouches.filter(function(d) { !touches.includes(d) });
+    return onGoingTouches.filter(function(d) { !touches.includes(d); });
   }
 
 
