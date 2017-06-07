@@ -7,7 +7,7 @@ var el = document.getElementByTagName("canvas")[0];
   el.addEventListener("touchend", handleEnd, false);
   el.addEventListener("touchcancel", handleCancel, false);
   //el.addEventListener("touchmove", handleMove, false);
-  el.addEventListener("moueup", handleEnd, false);
+  el.addEventListener("mouseup", handleEnd, false);
    log("initialising")
 
   // array for ongoing touches
@@ -21,7 +21,6 @@ var el = document.getElementByTagName("canvas")[0];
     touches.forEach(function (t) {
       ongoingTouches.push(t);
       log("touchstart:" + t + "."); });
-    }
   }
 
   function handleCancel(evt) {
