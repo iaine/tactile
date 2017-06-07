@@ -18,9 +18,10 @@ var el = document.getElementsByTagName("canvas")[0];
     log("touchstart.");
     var touches = evt.changedTouches;
         
-    touches.forEach(function (t) {
-      ongoingTouches.push(t);
-      log("touchstart:" + t + "."); });
+    for (var i in touches) {
+      ongoingTouches.push(touches[i]);
+      log("touchstart:" + touches[i] + "."); 
+    }
   }
 
   function handleCancel(evt) {
@@ -34,7 +35,7 @@ var el = document.getElementsByTagName("canvas")[0];
     var touches = filterItems(evt.changedTouches);
    
     if (touches.length > 0) {
-      touches.forEach(function(d) { sendPost(d); }); 
+      for (var i in touches) { sendPost(touches[i]); }); 
     } else {
       log("can't figure out which touch to end");
     }
