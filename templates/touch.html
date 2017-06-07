@@ -41,11 +41,9 @@ var el = document.getElementsByTagName("canvas")[0];
     }
   }
    // General Functions
-  function filterItems(array_b) {
-    return this.filter(function (t) { 
-       return array_b.indexOf(t) < 0;
-      });
-  };
+  function filterItems(touches) {
+    return onGoingTouches.filter(function(d) { !touches.include(d) });
+  }
 
 
   function log(msg) {
