@@ -15,7 +15,7 @@ app.config['AUDIO_UPLOAD_FOLDER'] = AUDIO_UPLOAD_FOLDER
 app.config['SECRET_KEY'] = '\x0bE\x85\xed\xb0\xa5\xda\x90\xb2\x94\xd0\x02\x96\xda=\xf1\x83w\x9ei\xc3#|\xa2'
 
 #set up a global for audio. 
-
+state = 0
 @app.route('/<uid_str>', methods=['GET', 'POST'])
 def query_picture_position(uid_str):
     '''
@@ -25,11 +25,16 @@ def query_picture_position(uid_str):
         return render_template('touch.html')
     if request.method == 'POST':
         content = request.get_json(force=True)
-        if 'x' in content:        
-            pos_audio = check_audio(content["x"],content["y"])
-            print(pos_audio)
-            if pos_audio is not None:
-                play(pos_audio)
+        if state == 0:
+            if 'x' in content:        
+                pos_audio = check_audio(content["x"],content["y"])
+                print(pos_audio)
+                if pos_audio is not None:
+                    state = 1
+                    play(pos_audio)
+        else:
+            state = 0
+            play.stop()
         return uid_str
     
 
