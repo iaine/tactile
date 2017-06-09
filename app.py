@@ -24,13 +24,12 @@ def query_picture_position(uid_str):
     if request.method == 'GET':
         return render_template('touch.html')
     if request.method == 'POST':
-        x = request.values['x']
-        y = request.values['y']
-
-        pos_audio = check_audio(x,y)
-        print(pos_audio)
-        if pos_audio is not None:
-            play(pos_audio)
+        content = request.get_json(force=True)
+        if 'x' in content:        
+            pos_audio = check_audio(content["x"],content["y"])
+            print(pos_audio)
+            if pos_audio is not None:
+                play(pos_audio)
         return uid_str
     
 
