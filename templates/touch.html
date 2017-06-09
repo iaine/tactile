@@ -55,10 +55,12 @@ var el = document.getElementsByTagName("canvas")[0];
   *  Function to send data to the current page asynchronously
   */
   function sendPost(d) {
-    var client = new XMLHttpRequest();
-    client.open("POST", "/turner_image", false); //false to prevent synchronous call
-    client.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
-    client.send(d.pageX, d.pageY);
+    if (d.pageX) {
+      var client = new XMLHttpRequest();
+      client.open("POST", "/turner_image", false); //false to prevent synchronous call
+      client.setRequestHeader("Content-Type", "application/json");
+      client.send(JSON.stringify({'x':d.pageX, 'y':d.pageY}));
+    }
   }
 
 
