@@ -17,23 +17,23 @@ var el = document.getElementsByTagName("canvas")[0];
   function handleStart(evt) {
     evt.preventDefault();
     log("touchstart.");
-    var touches = evt.changedTouches;
+    /*var touches = evt.changedTouches;
         
     for (var i in touches) {
       onGoingTouches.push(touches[i]);
       log("touchstart:" + touches[i] + "."); 
-    }
+    }*/
   }
 
   function handleCancel(evt) {
     evt.preventDefault();
-    var touches = filterItems(evt.changedTouches);
+    //var touches = filterItems(evt.changedTouches);
   }
 
   function handleEnd(evt) {
     evt.preventDefault();
     log("touchend");
-    var touches = filterItems(evt.changedTouches);
+    var touches = evt.changedTouches;
    
     if (touches.length > 0) {
       for (var i in touches) { sendPost(touches[i]); }; 
