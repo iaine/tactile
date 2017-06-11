@@ -3,6 +3,7 @@ from flask import Flask, request, redirect, url_for, render_template, flash
 from werkzeug.utils import secure_filename
 
 from dao import DAO
+from audioplay import Audio
 
 IMAGE_UPLOAD_FOLDER = 'static/images/'
 AUDIO_UPLOAD_FOLDER = 'audio'
@@ -15,7 +16,9 @@ app.config['AUDIO_UPLOAD_FOLDER'] = AUDIO_UPLOAD_FOLDER
 app.config['SECRET_KEY'] = '\x0bE\x85\xed\xb0\xa5\xda\x90\xb2\x94\xd0\x02\x96\xda=\xf1\x83w\x9ei\xc3#|\xa2'
 
 #set up a global for audio. 
-state = 0
+state = 1
+curr_time = 0
+
 @app.route('/<uid_str>', methods=['GET', 'POST'])
 def query_picture_position(uid_str):
     '''
@@ -26,12 +29,17 @@ def query_picture_position(uid_str):
     if request.method == 'POST':
         content = request.get_json(force=True)
         if state == 0:
-            if 'x' in content:        
-                pos_audio = check_audio(content["x"],content["y"])
-                print(pos_audio)
-                if pos_audio is not None:
-                    state = 1
-                    play(pos_audio)
+            if 'x' in content:
+                if x < 0.10:
+                   if y < 0.10:
+                    play('overview.mp3')
+                   elif y < 0.20:
+                    stop()
+                else:        
+                    pos_audio = check_audio(content["x"],content["y"])
+                    print(pos_audio)
+                    if pos_audio is not None:
+                        play(pos_audio)
         else:
             state = 0
             play.stop()
@@ -44,8 +52,17 @@ def check_audio(x,y):
        return audio
 
 def play(filename):
-    return "Play Hello"
+    if filename == "overview.mp3":
+        curr_time = time.time()
+        state == 3
+        Audio().play(filename)
+    else:
+        if time.time() > (curr_time + (2 * 60 * 1000)):
+            Audio().play(filename)
  
+def stop():
+    Audio().stop()
+
 def allowed_file(filename, extension):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in extension
