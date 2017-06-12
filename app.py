@@ -1,4 +1,5 @@
 import os
+import time
 from flask import Flask, request, redirect, url_for, render_template, flash
 from werkzeug.utils import secure_filename
 
@@ -8,7 +9,7 @@ from audioplay import Audio
 IMAGE_UPLOAD_FOLDER = 'static/images/'
 AUDIO_UPLOAD_FOLDER = 'audio'
 ALLOWED_EXTENSIONS_AUDIO = set(['mp3'])
-ALLOWED_EXTENSIONS_PIC = set(['jpg', 'png', 'jpeg'])
+ALLOWED_EXTENSIONS_PIC = set(['jpg', 'png', 'jpeg', 'pdf'])
 
 app = Flask(__name__)
 app.config['IMAGE_UPLOAD_FOLDER'] = IMAGE_UPLOAD_FOLDER
@@ -24,16 +25,17 @@ def query_picture_position(uid_str):
     '''
        Takes the (x,y) tuple from post and retrieves the audio if near
     '''
+    global state
     if request.method == 'GET':
         return render_template('touch.html')
     if request.method == 'POST':
         content = request.get_json(force=True)
         if state == 0:
             if 'x' in content:
-                if x < 0.10:
-                   if y < 0.10:
+                if content["x"] < 144:
+                   if content["y"] < 164:
                     play('overview.mp3')
-                   elif y < 0.20:
+                   elif content["y"] < 194:
                     stop()
                 else:        
                     pos_audio = check_audio(content["x"],content["y"])
@@ -42,7 +44,7 @@ def query_picture_position(uid_str):
                         play(pos_audio)
         else:
             state = 0
-            play.stop()
+            stop()
         return uid_str
     
 
@@ -88,6 +90,7 @@ def upload_file(uid):
             for f in os.listdir(app.config['IMAGE_UPLOAD_FOLDER']):
                 if f[:len(uid)] == uid:
                     fname = f
+            coords = [{'x':134,'y':144 }, {'x':134,'y':164 }]
             coords = DAO().fetch_xy(uid)
             return render_template('record.html', record=fname, coords=coords)
 
@@ -96,7 +99,9 @@ def upload_file(uid):
         for f in os.listdir(app.config['IMAGE_UPLOAD_FOLDER']):
             if f[:len(uid)] == uid:
                 fname = f
-        coords = DAO().fetch_xy(uid)
+        coords = [{'x':144,'y':164 }, {'x':144,'y':194 }]
+        #coords = DAO().fetch_xy(uid)
+        #coords.append({'x':0.00,'y':0.10 })
         print(coords)
         return render_template('record.html', record=fname, coords=coords)
 
