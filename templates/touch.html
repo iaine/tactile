@@ -35,7 +35,7 @@ var el = document.getElementsByTagName("canvas")[0];
     log("touchend");
     var touches = evt.changedTouches;
    
-    if (touches.length > 0) {
+    if (touches && touches.length > 0) {
       for (var i in touches) { sendPost(touches[i]); }; 
     } else {
       log("can't figure out which touch to end");
