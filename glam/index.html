@@ -77,7 +77,7 @@ function fakeDAO(x, y) {
         timeMS = Date.now()
         loadSound(url + 'overview.mp3');
       } else if (state == 3) {
-        playStop();
+        stopSound();
         state = 1;
       }
     } else if (y < 40) {
@@ -90,7 +90,7 @@ function fakeDAO(x, y) {
       loadSound(url+'windows.wav'); 
     }
     else if (state == 2) { 
-      playStop(); state = 1; 
+      stopSound(); state = 1; 
     }
     else if (state == 3 && Date.now() > (curr_time + (2 * 60 *1000))) {
       loadSound(url+'windows.wav'); state = 1; 
