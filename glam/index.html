@@ -66,7 +66,7 @@ var touchBuffer = null;
 // Fix up prefixing
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 var context = new AudioContext();
-var source = context.createBufferSource(); // creates a sound source
+var source = '';
 var url = './mus_audio/';
   
 function fakeDAO(x, y) {
@@ -114,7 +114,7 @@ function loadSound(url) {
 }
 
 function playSound(buffer) {
-
+  source = context.createBufferSource(); // creates a sound source
   source.buffer = buffer;                    // tell the source which sound to play
   source.connect(context.destination);       // connect the source to the context's destination (the speakers)
   source.start(0);                           // play the source now
@@ -122,6 +122,7 @@ function playSound(buffer) {
 }
 
 function stopSound() {
+  source = '';
   touchBuffer = '';
   //source.buffer = '';
   //source.connect(context.destination);
