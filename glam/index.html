@@ -122,7 +122,8 @@ function playSound(buffer) {
 }
 
 function stopSound() {
-  //source.buffer = touchBuffer;
+  touchBuffer = '';
+  source.buffer = '';
   //source.connect(context.destination);
   source.stop();
 }
