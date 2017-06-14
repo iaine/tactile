@@ -107,7 +107,7 @@ function loadSound(url) {
     context.decodeAudioData(request.response, function(buffer) {
       touchBuffer = buffer;
       playSound(touchBuffer);
-    }, onError);
+    }, log("audio load failed"));
   }
   request.send();
 }
