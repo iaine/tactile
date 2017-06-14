@@ -6,7 +6,6 @@
 <p id="log" />
 <!--<img src="turner_outline.png" />-->
 <canvas id='myCanvas' width="968" height="950"></canvas>
-<!--<p id="log" /> -->
 <script type="text/javascript">
 var el = document.getElementsByTagName("canvas")[0];
   el.addEventListener("touchstart", handleStart, false);
@@ -177,7 +176,7 @@ function playSound(buffer) {
 }
 
 function stopSound() {
-  source.stop()
+  source.stop();
   source = '';
   touchBuffer = '';
 }
