@@ -75,7 +75,7 @@ function fakeDAO(x, y) {
       if (state == 1) {
         state = 3;
         timeMS = Date.now()
-        loadSong(url + 'overview.mp3');
+        loadSound(url + 'overview.mp3');
       } else if (state == 3) {
         playStop();
       }
@@ -83,7 +83,7 @@ function fakeDAO(x, y) {
       playStop();
     }
  } else if ((x > 80 && x < 84) && (y > 363 && y < 367)) {
-    loadSong(url+'windows.wav');
+    loadSound(url+'windows.wav');
  } 
 }
   
