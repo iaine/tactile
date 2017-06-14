@@ -64,22 +64,24 @@ var touchBuffer = null;
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 var context = new AudioContext();
 var source = context.createBufferSource(); // creates a sound source
-var url = null;
+var url = './mus_audio/';
   
 function fakeDAO(x, y) {
- if (x < 144) {
-    if (y < 164) {
+ if (x < 20) {
+    if (y < 15) {
       if (state == 1) {
         state = 3;
         timeMS = Date.now()
-        loadSong('overview.mp3');
+        loadSong(url + 'overview.mp3');
       } else if (state == 3) {
         playStop();
       }
-    } else if (y < 194) {
+    } else if (y < 40) {
       playStop();
     }
- }
+ } else if ((x > 80 && x < 84) && (y > 363 && y < 367)) {
+    loadSong(url+'windows.wav');
+ } 
 }
   
 function loadSound(url) {
