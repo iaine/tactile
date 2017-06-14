@@ -16,6 +16,7 @@ var el = document.getElementsByTagName("canvas")[0];
   //el.addEventListener("touchmove", handleMove, false);
   el.addEventListener("mouseup", handleEnd, false);
   el.addEventListener("mouseleave", handleEnd, false);
+  el.addEventListener("pointerup", handleEnd, false);
   el.addEventListener("click", handleEnd, false);
    log("initialising")
 
