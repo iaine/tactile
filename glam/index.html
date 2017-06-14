@@ -43,6 +43,7 @@ var el = document.getElementsByTagName("canvas")[0];
     var touches = evt.changedTouches;
    
     if (touches && touches.length > 0) {
+      log("x: " + touches[i].pageX + " y: " + touches[i].pageY);
       for (var i in touches) { fakeDAO(touches[i].pageX, touches[i].pageY); }; 
     } else {
       log("can't figure out which touch to end");
