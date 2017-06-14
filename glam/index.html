@@ -17,6 +17,9 @@ var el = document.getElementsByTagName("canvas")[0];
   // array for ongoing touches
   var onGoingTouches = []
   var touches = []
+  //state for playing
+  var state = 1;
+  var timeMS = null;
 
   function handleStart(evt) {
     evt.preventDefault();
@@ -40,7 +43,7 @@ var el = document.getElementsByTagName("canvas")[0];
     var touches = evt.changedTouches;
    
     if (touches && touches.length > 0) {
-      for (var i in touches) { sendPost(touches[i]); }; 
+      for (var i in touches) { fakeDAO(touches[i].pageX, touches[i].pageY); }; 
     } else {
       log("can't figure out which touch to end");
     }
@@ -61,7 +64,24 @@ var touchBuffer = null;
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 var context = new AudioContext();
 var source = context.createBufferSource(); // creates a sound source
-
+var url = null;
+  
+function fakeDAO(x, y) {
+ if (x < 144) {
+    if (y < 164) {
+      if (state == 1) {
+        state = 3;
+        timeMS = Date.now()
+        loadSong('overview.mp3');
+      } else if (state == 3) {
+        playStop();
+      }
+    } else if (y < 194) {
+      playStop();
+    }
+ }
+}
+  
 function loadSound(url) {
   var request = new XMLHttpRequest();
   request.open('GET', url, true);
