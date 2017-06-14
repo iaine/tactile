@@ -11,9 +11,10 @@
 var el = document.getElementsByTagName("canvas")[0];
   el.addEventListener("touchstart", handleStart, false);
   el.addEventListener("touchend", handleEnd, false);
-  el.addEventListener("touchcancel", handleCancel, false);
+  el.addEventListener("touchcancel", handleEnd, false);
   //el.addEventListener("touchmove", handleMove, false);
   el.addEventListener("mouseup", handleEnd, false);
+  el.addEventListener("click", handleEnd, false);
    log("initialising")
 
   // array for ongoing touches
