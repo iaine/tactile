@@ -122,11 +122,9 @@ function playSound(buffer) {
 }
 
 function stopSound() {
+  source.stop()
   source = '';
   touchBuffer = '';
-  //source.buffer = '';
-  //source.connect(context.destination);
-  source.stop();
 }
 </script>
 
