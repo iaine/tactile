@@ -11,7 +11,7 @@
 var el = document.getElementsByTagName("canvas")[0];
   el.addEventListener("touchstart", handleEnd, false); //touch start is more effective?
   el.addEventListener("mouseenter", handleStart, false);
-  el.addEventListener("touchend", handleEnd, false);
+  //el.addEventListener("touchend", handleEnd, false);
   el.addEventListener("touchcancel", handleEnd, false);
   //el.addEventListener("touchmove", handleMove, false);
   //el.addEventListener("mouseup", handleEnd, false);
@@ -44,9 +44,11 @@ var el = document.getElementsByTagName("canvas")[0];
    
     if (touches && touches.length > 0) {
       for (var i in touches) { 
+        if (touches[i].pageX){
         alert("x: " + touches[i].pageX + " y: " + touches[i].pageY);
         log("x: " + touches[i].pageX + " y: " + touches[i].pageY); 
-        fakeDAO(touches[i].pageX, touches[i].pageY); 
+        fakeDAO(touches[i].pageX, touches[i].pageY);
+        }
       }; 
     } else {
       log("can't figure out which touch to end");
