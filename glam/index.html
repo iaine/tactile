@@ -9,7 +9,7 @@
 <p id="log" />
 <script type="text/javascript">
 var el = document.getElementsByTagName("canvas")[0];
-  el.addEventListener("touchstart", handleStart, false);
+  el.addEventListener("touchstart", handleEnd, false); //touch start is more effective?
   el.addEventListener("mouseenter", handleStart, false);
   el.addEventListener("touchend", handleEnd, false);
   el.addEventListener("touchcancel", handleEnd, false);
