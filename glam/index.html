@@ -44,6 +44,7 @@ var el = document.getElementsByTagName("canvas")[0];
    
     if (touches && touches.length > 0) {
       for (var i in touches) { 
+        alert("x: " + touches[i].pageX + " y: " + touches[i].pageY);
         log("x: " + touches[i].pageX + " y: " + touches[i].pageY); 
         fakeDAO(touches[i].pageX, touches[i].pageY); 
       }; 
