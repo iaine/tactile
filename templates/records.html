@@ -1,9 +1,11 @@
 <!doctype html>
     <title>List of Records</title>
     <div id="records">
+        <ul>
     {% for record in records %}
-      <a href="record/{{record}}">{{record}}</a>
+            <li><a href="record/{{record}}">{{record}}</a></li>
     {% endfor %}
+        </ul>
     </div>
     <div id="upload">
     <h2>Upload new File</h2>
