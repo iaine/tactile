@@ -64,8 +64,7 @@ function mark_image(coords) {
     if (touches && touches.length > 0) {
       for (var i in touches) { 
         if (touches[i].pageX){
-        alert("x: " + touches[i].pageX + " y: " + touches[i].pageY);
-        log("x: " + touches[i].pageX + " y: " + touches[i].pageY); 
+        //log("x: " + touches[i].pageX + " y: " + touches[i].pageY); 
         fakeDAO(touches[i].pageX, touches[i].pageY);
         }
       }; 
