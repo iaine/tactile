@@ -8,7 +8,7 @@
 <canvas id='myCanvas' width="968" height="950"></canvas>
 <div id="img_src">
 </div>
-<!-- <p id="log" /> -->
+<!--<p id="log" /> -->
 <script type="text/javascript">
 var el = document.getElementsByTagName("canvas")[0];
   el.addEventListener("touchstart", handleEnd, false); //touch start is more effective?
@@ -20,7 +20,7 @@ var el = document.getElementsByTagName("canvas")[0];
   //el.addEventListener("mouseleave", handleEnd, false);
   //el.addEventListener("pointerup", handleEnd, false);
   //el.addEventListener("click", handleEnd, false);
-   log("initialising")
+   //log("initialising")
 
   // array for ongoing touches
   var onGoingTouches = []
@@ -64,12 +64,12 @@ function mark_image(coords) {
     if (touches && touches.length > 0) {
       for (var i in touches) { 
         if (touches[i].pageX){
-        log("x: " + touches[i].pageX + " y: " + touches[i].pageY); 
+        //log("x: " + touches[i].pageX + " y: " + touches[i].pageY); 
         fakeDAO(touches[i].pageX, touches[i].pageY);
         }
       }; 
     } else {
-      log("can't figure out which touch to end");
+      //log("can't figure out which touch to end");
     }
   }
    // General Functions
@@ -184,7 +184,7 @@ function loadSound(url) {
     context.decodeAudioData(request.response, function(buffer) {
       touchBuffer = buffer;
       playSound(touchBuffer);
-    }, log("audio load failed"));
+    }, "");
   }
   request.send();
 }
