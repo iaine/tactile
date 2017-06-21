@@ -39,13 +39,13 @@ function mark_image(coords) {
   for (var i in coords) {
     var ctx = cnvs.getContext("2d");
     ctx.beginPath();
-    ctx.arc(coords[i].x, coords[i].y, 10, 0, 2 * Math.PI, false);
+    ctx.arc(coords[i].x, coords[i].y, 30, 0, 2 * Math.PI, false);
     ctx.lineWidth = 3;
     ctx.strokeStyle = '#00ff00';
     ctx.stroke();
   }
 }
-  mark_image([{'x':82,'y':365}, {'x':296,'y':434}, {'x':374,'y':405}, {'x':711,'y':169}, {'x':585,'y':544}, {'x':416,'y':341}]);
+  mark_image([{'x':58,'y':410}, {'x':348,'y':488}, {'x':462,'y':444}, {'x':751,'y':645}, {'x':520,'y':307}, {'x':903,'y':105}]);
   function handleStart(evt) {
     evt.preventDefault();
     //log("touchstart.");
@@ -105,7 +105,7 @@ function fakeDAO(x, y) {
       stopSound();
       state = 1;
     }
- } else if ((x > 65 && x < 95) && (y > 350 && y < 390)) {
+ } else if ((x > 28 && x < 88) && (y > 380 && y < 440)) {
     if (state == 1) { 
       state = 2;
       loadSound(url+'windows.wav'); 
@@ -116,7 +116,7 @@ function fakeDAO(x, y) {
     else if (state == 3 && Date.now() > (curr_time + (2 * 60 *1000))) {
       loadSound(url+'windows.wav'); state = 1; 
     }
- } else if ((x > 286 && x < 306) && (y > 429 && y < 480)) {
+ } else if ((x > 318 && x < 348) && (y > 458 && y < 518)) {
     if (state == 1) { 
       state = 2;
       loadSound(url+'ladder.wav'); 
@@ -127,7 +127,7 @@ function fakeDAO(x, y) {
     else if (state == 3 && Date.now() > (curr_time + (2 * 60 *1000))) {
       loadSound(url+'ladder.wav'); state = 1; 
     }
- } else if ((x > 364 && x < 384) && (y > 395 && y < 440)) {
+ } else if ((x > 432 && x < 492) && (y > 414 && y < 474)) {
     if (state == 1) { 
       state = 2;
       loadSound(url+'carfaxtower.wav'); 
@@ -138,7 +138,7 @@ function fakeDAO(x, y) {
     else if (state == 3 && Date.now() > (curr_time + (2 * 60 *1000))) {
       loadSound(url+'carfaxtower.wav'); state = 1; 
     }
- } else if ((x > 701 && x < 721) && (y > 159 && y < 190)) {
+ } else if ((x > 490 && x < 550) && (y > 277 && y < 337)) {
     if (state == 1) { 
       state = 2;
       loadSound(url+'allsaintsspire.wav'); 
@@ -149,7 +149,7 @@ function fakeDAO(x, y) {
     else if (state == 3 && Date.now() > (curr_time + (2 * 60 *1000))) {
       loadSound(url+'allsaintsspire.wav'); state = 1; 
     }
- } else if ((x > 575 && x < 595) && (y > 534 && y < 594)) {
+ } else if ((x > 721 && x < 781) && (y > 615 && y < 675)) {
     if (state == 1) { 
       state = 2;
       loadSound(url+'staff.wav'); 
@@ -160,7 +160,7 @@ function fakeDAO(x, y) {
     else if (state == 3 && Date.now() > (curr_time + (2 * 60 *1000))) {
       loadSound(url+'staff.wav'); state = 1; 
     }
- } else if ((x > 406 && x < 426) && (y > 331 && y < 390)) {
+ } else if ((x > 873 && x < 933) && (y > 75 && y < 135)) {
     if (state == 1) { 
       state = 2;
       loadSound(url+'stmarys.wav'); 
