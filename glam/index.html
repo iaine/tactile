@@ -39,13 +39,13 @@ function mark_image(coords) {
   for (var i in coords) {
     var ctx = cnvs.getContext("2d");
     ctx.beginPath();
-    ctx.arc(coords[i].x, coords[i].y, 30, 0, 2 * Math.PI, false);
+    ctx.arc(coords[i].x, coords[i].y, 40, 0, 2 * Math.PI, false);
     ctx.lineWidth = 3;
     ctx.strokeStyle = '#00ff00';
     ctx.stroke();
   }
 }
-  mark_image([{'x':58,'y':410}, {'x':348,'y':488}, {'x':462,'y':444}, {'x':751,'y':645}, {'x':520,'y':307}, {'x':903,'y':105}]);
+  mark_image([{'x':58,'y':410}, {'x':348,'y':488}, {'x':462,'y':444}, {'x':751,'y':645}, {'x':520,'y':307}, {'x':903,'y':105},{'x':933,'y':105}]);
   function handleStart(evt) {
     evt.preventDefault();
     //log("touchstart.");
@@ -171,7 +171,19 @@ function fakeDAO(x, y) {
     else if (state == 3 && Date.now() > (curr_time + (2 * 60 *1000))) {
       loadSound(url+'stmarys.wav'); state = 1; 
     }
- }  
+ } else if ((x > 934 && x < 973) && (y > 75 && y < 135)) {
+    if (state == 1) { 
+      state = 2;
+      loadSound(url+'staff.wav'); 
+    }
+    else if (state == 2) { 
+      stopSound(); 
+      state = 1; 
+    }
+    else if (state == 3 && Date.now() > (curr_time + (2 * 60 *1000))) {
+      loadSound(url+'stmarys.wav'); state = 1; 
+    }
+ } 
 }
   
 function loadSound(url) {
