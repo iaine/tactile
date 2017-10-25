@@ -91,6 +91,10 @@ def upload_file(uid):
             for f in os.listdir(app.config['IMAGE_UPLOAD_FOLDER']):
                 if f[:len(uid)] == uid:
                     fname = f
+            layout = None
+            with open(uid + '.json', 'rb') as fh:
+                _tmp = json.loads(f.read())
+                layout = _tmp['layout']
             coords = [{'x':14,'y':44 }, {'x':14,'y':84 }]
             coords = DAO().fetch_xy(uid)
             return render_template('record.html',layout=layout, record=fname, coords=coords)
@@ -129,7 +133,8 @@ def get_files():
         if file and allowed_file(file.filename, ALLOWED_EXTENSIONS_PIC):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['IMAGE_UPLOAD_FOLDER'], filename))
-            with open(filename + '.json', 'wb') as f:
+            fname = filename.split('.')
+            with open(fname[0] + '.json', 'wb') as f:
                 f.write(json.dumps({'layout': request.form['interest']}))
             return redirect(url_for('get_files'))
      
