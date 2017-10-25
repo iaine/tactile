@@ -10,7 +10,19 @@
     <div id="upload">
     <h2>Upload new File</h2>
     <form method=post enctype=multipart/form-data>
-         <input type=file name=file>
-         <input type=submit value=Upload>
+      <fieldset>
+        <legend>Set image layout</legend>
+        <div>
+          <input type="checkbox" id="portrait" name="interest" value="portrait">
+          <label for="portrait">Portrait</label>
+        </div>
+        <div>
+          <input type="checkbox" id="landscape" name="interest" value="landscape">
+          <label for="landscape">Landscape</label>
+        </div>
+      </fieldset>
+      <input type=file name=file>
+      <input type=submit value=Upload>
     </form>
-    </div>
+ </div>
+</html>

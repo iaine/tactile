@@ -1,13 +1,23 @@
 <doctype html>
 {% block body %}
+{% if layout == 'portrait' %}
+<p onmousedown="set_xy(event)" ><img id="theImg" src="../static/images/{{record}}" width="378" /></p>
+{% else %}
 <p onmousedown="set_xy(event)" ><img id="theImg" src="../static/images/{{record}}" width="968" /></p>
+{% endif %}
+
 <canvas id='myCanvas' width="968" height="950"></canvas>
 <div id="img_src">
 </div>
 <script type="text/javascript">
+var coord;
+var img = document.getElementById("img_src");
+var cnvs = document.getElementById("myCanvas");
+
 function mark_image(coords) {
-  var img = document.getElementById("img_src");
-  var cnvs = document.getElementById("myCanvas");
+  coord = coords;
+  /*var img = document.getElementById("img_src");
+  var cnvs = document.getElementById("myCanvas");*/
   
   cnvs.style.position = "absolute";
   cnvs.style.left = img.offsetLeft + "px";
@@ -23,8 +33,11 @@ function mark_image(coords) {
 }
 
 function set_xy(evt) {
+
+  coord.push({'x': evt.clientX, 'y': evt.clientY});
+  mark_image(coord);
   console.log("clientX: " + evt.clientX + " - clientY: " + evt.clientY)
-  var x = document.getElementById("img_src");
+  //var x = document.getElementById("img_src");
   var createform = document.createElement('form'); // Create New Element Form
   createform.setAttribute("action", ""); // Setting Action Attribute on Form
   createform.setAttribute("method", "post"); // Setting Method Attribute on Form
@@ -46,10 +59,17 @@ function set_xy(evt) {
   yelement.setAttribute("type", "hidden");
   createform.appendChild(yelement);
 
-  var inputelement = document.createElement('input'); // Create Input Field for Name
+  // Set the description
+  var inputelement = document.createElement('input');
   inputelement.setAttribute("type", "file");
-  inputelement.setAttribute("name", "file");
+  inputelement.setAttribute("name", "desc");
   createform.appendChild(inputelement);
+
+  //Set the details 
+  var detailelement = document.createElement('input');
+  detailelement.setAttribute("type", "file");
+  detailelement.setAttribute("name", "detail");
+  createform.appendChild(detailelement);
 
   // Submit
   var submitelement = document.createElement('input'); // Append Submit Button
@@ -58,7 +78,7 @@ function set_xy(evt) {
   submitelement.setAttribute("value", "Submit");
   createform.appendChild(submitelement);
 
-  x.appendChild(createform);
+  img.appendChild(createform);
 
 }
 
