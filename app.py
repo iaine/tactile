@@ -1,5 +1,6 @@
 import os
 import time
+import json
 from flask import Flask, request, redirect, url_for, render_template, flash
 from werkzeug.utils import secure_filename
 
@@ -9,7 +10,7 @@ from audioplay import Audio
 IMAGE_UPLOAD_FOLDER = 'static/images/'
 AUDIO_UPLOAD_FOLDER = 'audio'
 ALLOWED_EXTENSIONS_AUDIO = set(['mp3'])
-ALLOWED_EXTENSIONS_PIC = set(['jpg', 'png', 'jpeg', 'pdf'])
+ALLOWED_EXTENSIONS_PIC = set(['jpg', 'png', 'jpeg', 'gif'])
 
 app = Flask(__name__)
 app.config['IMAGE_UPLOAD_FOLDER'] = IMAGE_UPLOAD_FOLDER
@@ -90,16 +91,16 @@ def upload_file(uid):
             for f in os.listdir(app.config['IMAGE_UPLOAD_FOLDER']):
                 if f[:len(uid)] == uid:
                     fname = f
-            coords = [{'x':134,'y':144 }, {'x':134,'y':164 }]
+            coords = [{'x':14,'y':44 }, {'x':14,'y':84 }]
             coords = DAO().fetch_xy(uid)
-            return render_template('record.html', record=fname, coords=coords)
+            return render_template('record.html',layout=layout, record=fname, coords=coords)
 
     if request.method == 'GET':
         fname = None
         for f in os.listdir(app.config['IMAGE_UPLOAD_FOLDER']):
             if f[:len(uid)] == uid:
                 fname = f
-        coords = [{'x':144,'y':164 }, {'x':144,'y':194 }]
+        coords = [{'x':44,'y':44 }, {'x':44,'y':84 }]
         #coords = DAO().fetch_xy(uid)
         #coords.append({'x':0.00,'y':0.10 })
         print(coords)
@@ -128,5 +129,7 @@ def get_files():
         if file and allowed_file(file.filename, ALLOWED_EXTENSIONS_PIC):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['IMAGE_UPLOAD_FOLDER'], filename))
+            with open(filename + '.json', 'wb') as f:
+                f.write(json.dumps({'layout': request.form['interest']}))
             return redirect(url_for('get_files'))
      
