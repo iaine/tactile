@@ -4,11 +4,11 @@
 </head>
 <body>
 
-<!--<img src="turner_outline.png" />-->
+<img src="turner_outline.png" width="968" />
 <canvas id='myCanvas' width="968" height="950"></canvas>
 <div id="img_src">
 </div>
-<p id="log" />
+  <p id="log" />
 <script type="text/javascript">
 var el = document.getElementsByTagName("canvas")[0];
   el.addEventListener("touchstart", handleEnd, false); //touch start is more effective?
@@ -20,7 +20,7 @@ var el = document.getElementsByTagName("canvas")[0];
   //el.addEventListener("mouseleave", handleEnd, false);
   //el.addEventListener("pointerup", handleEnd, false);
   //el.addEventListener("click", handleEnd, false);
-   log("initialising")
+   //log("initialising")
 
   // array for ongoing touches
   var onGoingTouches = []
@@ -39,13 +39,13 @@ function mark_image(coords) {
   for (var i in coords) {
     var ctx = cnvs.getContext("2d");
     ctx.beginPath();
-    ctx.arc(coords[i].x, coords[i].y, 10, 0, 2 * Math.PI, false);
+    ctx.arc(coords[i].x, coords[i].y, 40, 0, 2 * Math.PI, false);
     ctx.lineWidth = 3;
     ctx.strokeStyle = '#00ff00';
     ctx.stroke();
   }
 }
-  mark_image([{'x':82,'y':365}, {'x':296,'y':434}, {'x':374,'y':405}, {'x':711,'y':169}, {'x':585,'y':544}, {'x':416,'y':341}]);
+  mark_image([{'x':58,'y':410}, {'x':348,'y':488}, {'x':462,'y':444}, {'x':751,'y':645}, {'x':520,'y':307}, {'x':903,'y':105},{'x':933,'y':105}]);
   function handleStart(evt) {
     evt.preventDefault();
     //log("touchstart.");
@@ -64,13 +64,12 @@ function mark_image(coords) {
     if (touches && touches.length > 0) {
       for (var i in touches) { 
         if (touches[i].pageX){
-        alert("x: " + touches[i].pageX + " y: " + touches[i].pageY);
-        log("x: " + touches[i].pageX + " y: " + touches[i].pageY); 
+        //log("x: " + touches[i].pageX + " y: " + touches[i].pageY); 
         fakeDAO(touches[i].pageX, touches[i].pageY);
         }
       }; 
     } else {
-      log("can't figure out which touch to end");
+      //log("can't figure out which touch to end");
     }
   }
    // General Functions
@@ -106,7 +105,7 @@ function fakeDAO(x, y) {
       stopSound();
       state = 1;
     }
- } else if ((x > 77 && x < 87) && (y > 360 && y < 370)) {
+ } else if ((x > 28 && x < 88) && (y > 380 && y < 440)) {
     if (state == 1) { 
       state = 2;
       loadSound(url+'windows.wav'); 
@@ -117,7 +116,7 @@ function fakeDAO(x, y) {
     else if (state == 3 && Date.now() > (curr_time + (2 * 60 *1000))) {
       loadSound(url+'windows.wav'); state = 1; 
     }
- } else if ((x > 286 && x < 306) && (y > 429 && y < 439)) {
+ } else if ((x > 318 && x < 348) && (y > 458 && y < 518)) {
     if (state == 1) { 
       state = 2;
       loadSound(url+'ladder.wav'); 
@@ -128,7 +127,7 @@ function fakeDAO(x, y) {
     else if (state == 3 && Date.now() > (curr_time + (2 * 60 *1000))) {
       loadSound(url+'ladder.wav'); state = 1; 
     }
- } else if ((x > 364 && x < 384) && (y > 395 && y < 415)) {
+ } else if ((x > 432 && x < 492) && (y > 414 && y < 474)) {
     if (state == 1) { 
       state = 2;
       loadSound(url+'carfaxtower.wav'); 
@@ -139,7 +138,7 @@ function fakeDAO(x, y) {
     else if (state == 3 && Date.now() > (curr_time + (2 * 60 *1000))) {
       loadSound(url+'carfaxtower.wav'); state = 1; 
     }
- } else if ((x > 701 && x < 721) && (y > 159 && y < 179)) {
+ } else if ((x > 490 && x < 550) && (y > 277 && y < 337)) {
     if (state == 1) { 
       state = 2;
       loadSound(url+'allsaintsspire.wav'); 
@@ -150,7 +149,7 @@ function fakeDAO(x, y) {
     else if (state == 3 && Date.now() > (curr_time + (2 * 60 *1000))) {
       loadSound(url+'allsaintsspire.wav'); state = 1; 
     }
- } else if ((x > 575 && x < 595) && (y > 534 && y < 554)) {
+ } else if ((x > 721 && x < 781) && (y > 615 && y < 675)) {
     if (state == 1) { 
       state = 2;
       loadSound(url+'staff.wav'); 
@@ -161,7 +160,7 @@ function fakeDAO(x, y) {
     else if (state == 3 && Date.now() > (curr_time + (2 * 60 *1000))) {
       loadSound(url+'staff.wav'); state = 1; 
     }
- } else if ((x > 406 && x < 426) && (y > 331 && y < 351)) {
+ } else if ((x > 873 && x < 933) && (y > 75 && y < 135)) {
     if (state == 1) { 
       state = 2;
       loadSound(url+'stmarys.wav'); 
@@ -172,7 +171,19 @@ function fakeDAO(x, y) {
     else if (state == 3 && Date.now() > (curr_time + (2 * 60 *1000))) {
       loadSound(url+'stmarys.wav'); state = 1; 
     }
- }  
+ } else if ((x > 934 && x < 973) && (y > 75 && y < 135)) {
+    if (state == 1) { 
+      state = 2;
+      loadSound(url+'staff.wav'); 
+    }
+    else if (state == 2) { 
+      stopSound(); 
+      state = 1; 
+    }
+    else if (state == 3 && Date.now() > (curr_time + (2 * 60 *1000))) {
+      loadSound(url+'stmarys.wav'); state = 1; 
+    }
+ } 
 }
   
 function loadSound(url) {
@@ -185,7 +196,7 @@ function loadSound(url) {
     context.decodeAudioData(request.response, function(buffer) {
       touchBuffer = buffer;
       playSound(touchBuffer);
-    }, log("audio load failed"));
+    }, log(""));
   }
   request.send();
 }
