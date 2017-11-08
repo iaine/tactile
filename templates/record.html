@@ -1,9 +1,9 @@
 <doctype html>
 {% block body %}
 {% if layout == 'portrait' %}
-<p onmousedown="set_xy(event)" ><img id="theImg" src="../static/images/{{record}}" width="378" /></p>
+<p onmousedown="set_xy(event)" ><img id="theImg" src=../"{{record}}" width="378" /></p>
 {% else %}
-<p onmousedown="set_xy(event)" ><img id="theImg" src="../static/images/{{record}}" width="968" /></p>
+<p onmousedown="set_xy(event)" ><img id="theImg" src="../{{record}}" width="968" /></p>
 {% endif %}
 
 <canvas id='myCanvas' width="968" height="950"></canvas>
