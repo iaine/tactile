@@ -71,10 +71,10 @@ def upload_file(uid):
         with open(dirname + '/index.json', 'rb') as fh:
             _tmp = json.loads(fh.read())
             layout = _tmp['layout']
-            coords = _tmp['points']
+            coords =str( _tmp['points'])
 
-        print(fname)
-        return render_template('record.html', record=fname, coords=coords)
+        print(coords)
+        return render_template('record.html', record=fname, coords=json.dumps(coords))
 
 def get_records():
     data = os.listdir(app.config['IMAGE_UPLOAD_FOLDER'])
@@ -104,6 +104,6 @@ def get_files():
             file.save(dirname + '/' +filename)
             
             with open(os.path.join(dirname, 'index.json'), 'wb') as f:
-                f.write(json.dumps({'layout': request.form['interest'], 'points': [{'x': 14, 'y': 44}, {'x': 14, 'y': 84}]}))
+                f.write(json.dumps({'layout': request.form['interest'], 'points': [{"x": 14, "y": 44}, {"x": 14, "y": 84}]}))
             return redirect(url_for('get_files'))
      
