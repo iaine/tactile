@@ -7,15 +7,15 @@
 {% endif %}
 
 <canvas id='myCanvas' width="968" height="950"></canvas>
-<div id="img_src">
-</div>
+<div id="img_src"></div>
+<div id="img_load"></div>
 <script type="text/javascript">
-var coord;
+var coord = Array();
 var img = document.getElementById("img_src");
 var cnvs = document.getElementById("myCanvas");
 
 function mark_image(coords) {
-  coord = coords;
+  
   /*var img = document.getElementById("img_src");
   var cnvs = document.getElementById("myCanvas");*/
   
@@ -23,6 +23,7 @@ function mark_image(coords) {
   cnvs.style.left = img.offsetLeft + "px";
   cnvs.style.top = img.offsetTop + "px";
   for (var i in coords) {
+    coord.push(coords[i])
     var ctx = cnvs.getContext("2d");
     ctx.beginPath();
     ctx.arc(coords[i].x, coords[i].y, 10, 0, 2 * Math.PI, false);
@@ -37,7 +38,7 @@ function set_xy(evt) {
   coord.push({'x': evt.clientX, 'y': evt.clientY});
   mark_image(coord);
   console.log("clientX: " + evt.clientX + " - clientY: " + evt.clientY)
-  //var x = document.getElementById("img_src");
+  var x = document.getElementById("img_load");
   var createform = document.createElement('form'); // Create New Element Form
   createform.setAttribute("action", ""); // Setting Action Attribute on Form
   createform.setAttribute("method", "post"); // Setting Method Attribute on Form
@@ -78,7 +79,7 @@ function set_xy(evt) {
   submitelement.setAttribute("value", "Submit");
   createform.appendChild(submitelement);
 
-  img.appendChild(createform);
+  x.appendChild(createform);
 
 }
 
