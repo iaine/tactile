@@ -43,7 +43,6 @@ class GitRepo():
 
     def runprocess(self):
         try:
-            print("Command given " +self.cmd)
             p = subprocess.check_output(self.git + " " + self.cmd, shell=True, stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as cpe:
             print(cpe.cmd)
