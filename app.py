@@ -8,13 +8,13 @@ from git import GitRepo
 from dao import DAO
 
 IMAGE_UPLOAD_FOLDER = 'static/tiles/'
-AUDIO_UPLOAD_FOLDER = 'static/tiles/audio'
+#AUDIO_UPLOAD_FOLDER = 'static/tiles/audio'
 ALLOWED_EXTENSIONS_AUDIO = set(['mp3'])
 ALLOWED_EXTENSIONS_PIC = set(['jpg', 'png', 'jpeg', 'gif'])
 
 app = Flask(__name__)
 app.config['IMAGE_UPLOAD_FOLDER'] = IMAGE_UPLOAD_FOLDER
-app.config['AUDIO_UPLOAD_FOLDER'] = AUDIO_UPLOAD_FOLDER
+#app.config['AUDIO_UPLOAD_FOLDER'] = AUDIO_UPLOAD_FOLDER
 app.config['SECRET_KEY'] = '\x0bE\x85\xed\xb0\xa5\xda\x90\xb2\x94\xd0\x02\x96\xda=\xf1\x83w\x9ei\xc3#|\xa2'
 
 @app.route('/')
@@ -42,11 +42,12 @@ def upload_file(uid):
             flash('No selected file')
             return redirect(request.url)
         if file and allowed_file(file.filename, ALLOWED_EXTENSIONS_AUDIO):
+            dirname = os.path.join(app.config['IMAGE_UPLOAD_FOLDER'], uid)
             filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['AUDIO_UPLOAD_FOLDER'], filename))
+            audir = os.path.join(dirname, "audio")
+            file.save(os.path.join(audir, filename))
             DAO().insert_data(uid, filename, float(request.values["x"]), float(request.values["y"]))
             fname = None
-            dirname = os.path.join(app.config['IMAGE_UPLOAD_FOLDER'], uid)
             for f in os.listdir(dirname):
                 if f[:len(uid)] == uid:
                     fname = f
