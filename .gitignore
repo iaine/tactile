@@ -1,2 +1,4 @@
 intf/*
 *.pyc
+static/tiles/*
+
