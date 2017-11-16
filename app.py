@@ -5,7 +5,6 @@ from flask import Flask, request, redirect, url_for, render_template, flash
 from werkzeug.utils import secure_filename
 
 from git import GitRepo
-from dao import DAO
 
 IMAGE_UPLOAD_FOLDER = 'static/tiles/'
 #AUDIO_UPLOAD_FOLDER = 'static/tiles/audio'
@@ -103,5 +102,14 @@ def get_files():
             
             with open(os.path.join(dirname, 'index.json'), 'wb') as f:
                 f.write(json.dumps({'layout': request.form['interest'], 'points': [{"x": 14, "y": 44}, {"x": 14, "y": 84}]}))
+            git = GitRepo(dirname)
+            os.chdir(dirname)
+            print(os.getcwd())
+            git.init()
+            git.add()
+            git.commit("Initial Commit")
+            git.remote(fname[0])
+            git.push()
+            os.chdir("../../../")
             return redirect(url_for('get_files'))
      

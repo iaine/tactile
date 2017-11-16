@@ -5,15 +5,20 @@
 import subprocess
 
 class GitRepo():
-    def __init__(self):
+    def __init__(self, changedir):
         self.git = 'git'
+        self.dir = changedir
 
-    def add(self, reponame):
+    def init(self):
+        self.cmd = "init "
+        self.runprocess()
+
+    def add(self):
         '''
             Adds all data in the repository
         '''
-        self.cmd = ' add ' + reponame + '/*'
-        return self.cmd
+        self.cmd = 'add --all'
+        self.runprocess()
 
     def commit(self, repo, commitmsg=None):
         '''
@@ -23,21 +28,22 @@ class GitRepo():
         if commitmsg is not None:
             self.cmd = commitmsg
         else:
-            self.cmd = "Commit " + repo
+            self.cmd = "commit -am '{0}'".format(repo)
 
-        return self.cmd
+        self.runprocess()
 
     def remote(self, reponame):
 
          self.cmd = "remote add origin git@github.com:iaine/"+ reponame + ".git"
-         return self.cmd
+         self.runprocess()
 
     def push (self):
          self.cmd = "push origin master"
-         return self.cmd
+         self.runprocess()
 
     def runprocess(self):
         try:
+            print("Command given " +self.cmd)
             p = subprocess.check_output(self.git + " " + self.cmd, shell=True, stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as cpe:
             print(cpe.cmd)
