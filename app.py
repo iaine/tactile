@@ -104,7 +104,7 @@ def get_files():
                 f.write(json.dumps({'layout': request.form['interest'], 'points': [{"x": 14, "y": 44}, {"x": 14, "y": 84}]}))
             git = GitRepo(dirname)
             os.chdir(dirname)
-            print(os.getcwd())
+            
             git.init()
             git.add()
             git.commit("Initial Commit")
