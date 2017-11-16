@@ -57,7 +57,6 @@ def upload_file(uid):
                 _tmp = json.loads(fh.read())
                 layout = _tmp['layout']
                 coords = _tmp['points']
-            #coords = DAO().fetch_xy(uid)
             return render_template('record.html',layout=layout, record=fname, coords=coords)
 
     if request.method == 'GET':
@@ -71,9 +70,8 @@ def upload_file(uid):
         with open(dirname + '/index.json', 'rb') as fh:
             _tmp = json.loads(fh.read())
             layout = _tmp['layout']
-            coords =str( _tmp['points'])
+            coords = _tmp['points']
 
-        print(coords)
         return render_template('record.html', record=fname, coords=json.dumps(coords))
 
 def get_records():
