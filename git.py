@@ -32,9 +32,9 @@ class GitRepo():
 
         self.runprocess()
 
-    def remote(self, reponame):
+    def remote(self, reponame, username):
 
-         self.cmd = "remote add origin git@github.com:iaine/"+ reponame + ".git"
+         self.cmd = "remote add origin git@github.com:"+ username +"/"+ reponame + ".git"
          self.runprocess()
 
     def push (self):
