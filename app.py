@@ -108,7 +108,7 @@ def get_files():
             git.init()
             git.add()
             git.commit("Initial Commit")
-            git.remote(fname[0])
+            git.remote(fname[0], "iaine")
             git.push()
             os.chdir("../../../")
             return redirect(url_for('get_files'))
