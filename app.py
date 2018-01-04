@@ -136,7 +136,7 @@ def get_files():
             #update the index file
             with open(indexdir, 'wb') as f:
                 _tmp = json.load(f.read())
-                f.write(_tmp['tiles'].append('{"' + ' '.join(filename.split()) +'" : "' + filename + '"}') 
+                f.write(_tmp['tiles'].append('{"' + ' '.join(filename.split()) +'" : "' + filename + '"}'))
 
             #update its own index with the coordinates
             with open(os.path.join(dirname, 'index.json'), 'wb') as f:
