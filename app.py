@@ -20,9 +20,9 @@ app.config.update(config)
 
 app.config['IMAGE_UPLOAD_FOLDER'] = IMAGE_UPLOAD_FOLDER
 
-app.config['GITHUB_CLIENT_ID'] = ''
-app.config['GITHUB_CLIENT_SECRET'] = ''
-app.config['SECRET_KEY'] = ''
+#app.config['GITHUB_CLIENT_ID'] = ''
+#app.config['GITHUB_CLIENT_SECRET'] = ''
+app.config['SECRET_KEY'] = '\x0bE\x85\xed\xb0\xa5\xda\x90\xb2\x94\xd0\x02\x96\xda=\xf1\x83w\x9ei\xc3#|\xa2'
 
 class User():
     def __init__(self):
@@ -46,8 +46,7 @@ def startup():
     indexdir = 'static/tiles/meta/'
     if not os.path.exists(indexdir):
         os.mkdir(indexdir)
-        with open(indexdir + 'index.json', 'wb') as f:
-            f.write(json.dump('{"tiles": []}'))
+        open(indexdir + 'index.json', 'wb').close()
 
 @app.route('/')
 def query_picture_position():
@@ -134,9 +133,22 @@ def get_files():
             file.save(dirname + '/' +filename)
 
             #update the index file
-            with open(indexdir, 'wb') as f:
-                _tmp = json.load(f.read())
-                f.write(_tmp['tiles'].append('{"' + ' '.join(filename.split()) +'" : "' + filename + '"}'))
+            data = None
+            with open('static/tiles/meta/index.json', 'r') as f:
+                data = f.read()
+                                   
+            with open('static/tiles/meta/index.json', 'w') as f:
+                if not data:
+                   _tmp = {}
+                   _tmp["tiles"] = []
+                   _tmp["tiles"].append(fname[0])
+                   json.dump(_tmp, f)
+                else:
+                   _tmp = json.loads(data)
+                   _tmp["tiles"].append(fname[0])
+                   json.dump(_tmp, f)
+
+            _commit_to_git(os.path.join(app.config['IMAGE_UPLOAD_FOLDER'],"meta") , "Update index file")
 
             #update its own index with the coordinates
             with open(os.path.join(dirname, 'index.json'), 'wb') as f:
@@ -144,17 +156,21 @@ def get_files():
 
             github.post("https://api.github.com/user/repos",data={"name":fname[0]})
             #add data to local git and post to repo
-            git = GitRepo(dirname)
-            os.chdir(dirname)
-            
-            git.init()
-            git.add()
-            git.commit("Initial Commit")
-            git.remote(fname[0], "iaine")
-            git.push()
-            os.chdir("../../../")
-
+            _commit_to_git(dirname, "Initial commit", fname[0])
             return redirect(url_for('get_files'))
+
+def _commit_to_git(dirname, message, reponame=None):
+        git = GitRepo(dirname)
+        os.chdir(dirname)
+        git.init()
+        git.add()
+        git.commit(message)
+
+        if reponame:
+            git.remote(reponame, "iaine")
+        
+        git.push()
+        os.chdir("../../../")
 
 @github.access_token_getter
 def token_getter():
