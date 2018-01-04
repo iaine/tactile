@@ -11,10 +11,17 @@ IMAGE_UPLOAD_FOLDER = 'static/tiles/'
 ALLOWED_EXTENSIONS_AUDIO = set(['mp3'])
 ALLOWED_EXTENSIONS_PIC = set(['jpg', 'png', 'jpeg', 'gif'])
 
+with open('./config.json', 'rb') as f:
+    config = json.load(f)
+
 app = Flask(__name__)
+
+app.config.update(config)
+
+app.config['IMAGE_UPLOAD_FOLDER'] = IMAGE_UPLOAD_FOLDER
+
 app.config['GITHUB_CLIENT_ID'] = ''
 app.config['GITHUB_CLIENT_SECRET'] = ''
-app.config['IMAGE_UPLOAD_FOLDER'] = IMAGE_UPLOAD_FOLDER
 app.config['SECRET_KEY'] = ''
 
 class User():
@@ -30,6 +37,17 @@ class User():
 
 github = GitHub(app)
 user = User()
+
+@app.before_first_request
+def startup():
+    '''
+       Check for index directory file existence
+    '''
+    indexdir = 'static/tiles/meta/'
+    if not os.path.exists(indexdir):
+        os.mkdir(indexdir)
+        with open(indexdir + 'index.json', 'wb') as f:
+            f.write(json.dump('{"tiles": []}'))
 
 @app.route('/')
 def query_picture_position():
@@ -114,7 +132,13 @@ def get_files():
             dirname = os.path.join(app.config['IMAGE_UPLOAD_FOLDER'], fname[0])
             os.mkdir(dirname)
             file.save(dirname + '/' +filename)
-            
+
+            #update the index file
+            with open(indexdir, 'wb') as f:
+                _tmp = json.load(f.read())
+                f.write(_tmp['tiles'].append('{"' + ' '.join(filename.split()) +'" : "' + filename + '"}') 
+
+            #update its own index with the coordinates
             with open(os.path.join(dirname, 'index.json'), 'wb') as f:
                 f.write(json.dumps({'layout': request.form['interest'], 'points': [{"x": 14, "y": 44}, {"x": 14, "y": 84}]}))
 
