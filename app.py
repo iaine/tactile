@@ -8,8 +8,8 @@ from flask_github import GitHub
 from git import GitRepo
 
 IMAGE_UPLOAD_FOLDER = 'static/tiles/'
-ALLOWED_EXTENSIONS_AUDIO = set(['mp3'])
-ALLOWED_EXTENSIONS_PIC = set(['jpg', 'png', 'jpeg', 'gif'])
+ALLOWED_EXTENSIONS_AUDIO = set(['mp3', 'wav'])
+ALLOWED_EXTENSIONS_PIC = set(['jpg', 'png', 'jpeg', 'gif', 'tif'])
 
 with open('./config.json', 'rb') as f:
     config = json.load(f)
@@ -62,11 +62,14 @@ def allowed_file(filename, extension):
 @app.route('/record/<uid>', methods=['GET', 'POST'])
 def upload_file(uid):
     if request.method == 'POST':
+        print( request.files['detail'])
         # check if the post request has the file part
-        if 'file' not in request.files:
+        if 'detail' not in request.files and 'desc' not in request.files:
+            print("no file")
             flash('No file part')
             return redirect(request.url)
         file = request.files['file']
+        print(file)
         # if user does not select file, browser also
         # submit a empty part without filename
         if file.filename == '':
@@ -154,9 +157,9 @@ def get_files():
             with open(os.path.join(dirname, 'index.json'), 'wb') as f:
                 f.write(json.dumps({'layout': request.form['interest'], 'points': [{"x": 14, "y": 44}, {"x": 14, "y": 84}]}))
 
-            github.post("https://api.github.com/user/repos",data={"name":fname[0]})
+            #github.post("https://api.github.com/user/repos",data={"name":fname[0]})
             #add data to local git and post to repo
-            _commit_to_git(dirname, "Initial commit", fname[0])
+            #_commit_to_git(dirname, "Initial commit", fname[0])
             return redirect(url_for('get_files'))
 
 def _commit_to_git(dirname, message, reponame=None):
