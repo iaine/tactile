@@ -62,14 +62,14 @@ def allowed_file(filename, extension):
 @app.route('/record/<uid>', methods=['GET', 'POST'])
 def upload_file(uid):
     if request.method == 'POST':
-        print( request.files['detail'])
+        print( request.files)
         # check if the post request has the file part
-        if 'detail' not in request.files and 'desc' not in request.files:
+        if not request.files:
             print("no file")
             flash('No file part')
             return redirect(request.url)
-        file = request.files['file']
-        print(file)
+        file = request.files['desc']
+   
         # if user does not select file, browser also
         # submit a empty part without filename
         if file.filename == '':
@@ -80,18 +80,23 @@ def upload_file(uid):
             filename = secure_filename(file.filename)
             audir = os.path.join(dirname, "audio")
             file.save(os.path.join(audir, filename))
-            DAO().insert_data(uid, filename, float(request.values["x"]), float(request.values["y"]))
+      
             fname = None
             for f in os.listdir(dirname):
                 if f[:len(uid)] == uid:
-                    fname = f
-            layout = None
-            coords = None
+                    fname = dirname + '/'+f
+
+            _tmp = {}
             with open(dirname + '/index.json', 'rb') as fh:
                 _tmp = json.loads(fh.read())
                 layout = _tmp['layout']
                 coords = _tmp['points']
-            return render_template('record.html',layout=layout, record=fname, coords=coords)
+
+            _tmp['points'].append({'x':float(request.values["x"]), 'y': float(request.values["y"]), 'ONE':request.files['desc'].filename, 'TWO': request.files['detail'].filename })
+            with open(dirname + '/index.json', 'wb') as fh:
+                json.dump(_tmp, fh)
+
+            return render_template('record.html', record=fname, coords=_tmp['points'])
 
     if request.method == 'GET':
         fname = None
@@ -101,12 +106,13 @@ def upload_file(uid):
                 fname = dirname + '/'+f
         layout = None
         coords = None
+        _tmp = {}
         with open(dirname + '/index.json', 'rb') as fh:
             _tmp = json.loads(fh.read())
             layout = _tmp['layout']
             coords = _tmp['points']
 
-        return render_template('record.html', record=fname, coords=json.dumps(coords))
+        return render_template('record.html', record=fname, coords=json.dumps(_tmp['points']))
 
 def get_records():
     data = os.listdir(app.config['IMAGE_UPLOAD_FOLDER'])
