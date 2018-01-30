@@ -96,7 +96,7 @@ def upload_file(uid):
             with open(dirname + '/index.json', 'wb') as fh:
                 json.dump(_tmp, fh)
 
-            return render_template('record.html', record=fname, coords=_tmp['points'])
+            return render_template('record.html', record=fname, coords=json.dumps(_tmp['points']))
 
     if request.method == 'GET':
         fname = None
