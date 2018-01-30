@@ -3,9 +3,7 @@ import time
 import json
 from flask import Flask, request, redirect, url_for, render_template, flash, g
 from werkzeug.utils import secure_filename
-from flask_github import GitHub
 
-from git import GitRepo
 
 IMAGE_UPLOAD_FOLDER = 'static/tiles/'
 ALLOWED_EXTENSIONS_AUDIO = set(['mp3', 'wav'])
@@ -23,20 +21,6 @@ app.config['IMAGE_UPLOAD_FOLDER'] = IMAGE_UPLOAD_FOLDER
 #app.config['GITHUB_CLIENT_ID'] = ''
 #app.config['GITHUB_CLIENT_SECRET'] = ''
 app.config['SECRET_KEY'] = '\x0bE\x85\xed\xb0\xa5\xda\x90\xb2\x94\xd0\x02\x96\xda=\xf1\x83w\x9ei\xc3#|\xa2'
-
-class User():
-    def __init__(self):
-        self.github_access_token = ''
-
-    def get_access(self):
-        return self.github_access_token
-
-    def set_access(self, github_access_token):
-        self.github_access_token = github_access_token
-
-
-github = GitHub(app)
-user = User()
 
 @app.before_first_request
 def startup():
@@ -172,49 +156,8 @@ def get_files():
                    _tmp["tiles"].append(fname[0])
                    json.dump(_tmp, f)
 
-            _commit_to_git(os.path.join(app.config['IMAGE_UPLOAD_FOLDER'],"meta") , "Update index file")
-
             #update its own index with the coordinates
             with open(os.path.join(dirname, 'index.json'), 'wb') as f:
                 f.write(json.dumps({'layout': request.form['interest'], 'points': [{"x": 14, "y": 44, "ONE":"overview.mp3", "TWO": "overview2.mp3" }, {"x": 14, "y": 84}]}))
 
-            #github.post("https://api.github.com/user/repos",data={"name":fname[0]})
-            #add data to local git and post to repo
-            #_commit_to_git(dirname, "Initial commit", fname[0])
             return redirect(url_for('get_files'))
-
-def _commit_to_git(dirname, message, reponame=None):
-        git = GitRepo(dirname)
-        os.chdir(dirname)
-        git.init()
-        git.add()
-        git.commit(message)
-
-        if reponame:
-            git.remote(reponame, "iaine")
-        
-        git.push()
-        os.chdir("../../../")
-
-@github.access_token_getter
-def token_getter():
-    return user.github_access_token
-
-@app.route('/github-callback')
-@github.authorized_handler
-def authorized(access_token):
-    next_url = 'glam/record'
-    if access_token is None:
-        flash("Authorization failed.")
-        return redirect('/')
-
-    user.set_access(access_token)
-    return redirect(next_url)
-
-@app.route('/login')
-def login():
-    return github.authorize(scope="public_repo")
-
-class User():
-    def __init__(self, github_access_token):
-        self.github_access_token = github_access_token
