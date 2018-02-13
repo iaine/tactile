@@ -28,13 +28,13 @@
     <div class="insideWrapper">
 {% if layout == 'portrait' %}
 <p onmousedown="set_xy(event)" ><img id="theImg" src="../../{{record}}" width="378" /></p>
-<canvas onmousedown="set_xy(event)" class="coveringCanvas" id='myCanvas' width="378" height="950"></canvas>
+<canvas onmousedown="set_xy(event)" class="coveringCanvas" id='myCanvas' width="378" height="968"></canvas>
 <script type="text/javascript">
 var width = 378;
 var height = 968;
 </script>
 {% else %}
-<canvas class="coveringCanvas" id='myCanvas' width="968" height="378"></canvas>
+<canvas class="coveringCanvas" id='myCanvas'></canvas>
 <div style='display:none'>
   <img class="coveredImage" id="img_src" src="../../{{record}}" width="968">
 </div>
@@ -46,9 +46,6 @@ var height = 378;
 </div>
 <div>
 
-
-<!--<canvas id='myCanvas' width="968" height="950"></canvas>-->
-<!--<div id="img_src"></div>-->
 <div id="img_load"></div>
 <script type="text/javascript">
 var coord = Array();
@@ -59,15 +56,19 @@ var ctx = cnvs.getContext("2d");
 
 function mark_image(coords) {
   
-  var imageObj =new Image();
+  var imageObj =new Image(width, height);
   imageObj.onload = function() {
-    ctx.drawImage(imageObj,0,0, width, height);
+    console.log('width ' + width + 'height ' + height);
+    ctx.drawImage(this ,0,0, width, height);
   };
   imageObj.src = "../../{{record}}";  
   cnvs.style.position = "absolute";
   cnvs.style.left = img.offsetLeft + "px";
   cnvs.style.top = img.offsetTop + "px";
+  cnvs.width = width;
+  cnvs.height = height;
   for (var i in coords) {
+    console.log(coords[i])
     coord.push(coords[i])
     ctx.beginPath();
     ctx.arc(coords[i].x, coords[i].y, 10, 0, 2 * Math.PI, false);
@@ -82,7 +83,7 @@ function mark_image(coords) {
 function set_xy(evt) {
 
   coord.push({'x': evt.clientX, 'y': evt.clientY});
-
+  console.log('x' + evt.clientX + 'y' + evt.clientY);
   mark_image(coord);
  
   var x = document.getElementById("img_load");
