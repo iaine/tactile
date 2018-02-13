@@ -9,12 +9,12 @@ IMAGE_UPLOAD_FOLDER = 'static/tiles/'
 ALLOWED_EXTENSIONS_AUDIO = set(['mp3', 'wav'])
 ALLOWED_EXTENSIONS_PIC = set(['jpg', 'png', 'jpeg', 'gif', 'tif'])
 
-with open('./config.json', 'rb') as f:
-    config = json.load(f)
+#with open('./config.json', 'rb') as f:
+#    config = json.load(f)
 
 app = Flask(__name__)
 
-app.config.update(config)
+#app.config.update(config)
 
 app.config['IMAGE_UPLOAD_FOLDER'] = IMAGE_UPLOAD_FOLDER
 
@@ -95,7 +95,7 @@ def upload_file(uid):
             with open(dirname + '/index.json', 'wb') as fh:
                 json.dump(_tmp, fh)
 
-            return render_template('record.html', record=fname, coords=json.dumps(_tmp['points']))
+            return render_template('record.html', record=fname, coords=json.dumps(_tmp['points']), layout=json.dumps(_tmp['layout']) )
 
     if request.method == 'GET':
         fname = None
@@ -110,8 +110,8 @@ def upload_file(uid):
             _tmp = json.loads(fh.read())
             layout = _tmp['layout']
             coords = _tmp['points']
-
-        return render_template('record.html', record=fname, coords=json.dumps(_tmp['points']))
+        
+        return render_template('record.html', record=fname, coords=json.dumps(_tmp['points']), layout=json.dumps(_tmp['layout']) )
 
 def get_records():
     data = os.listdir(app.config['IMAGE_UPLOAD_FOLDER'])
@@ -158,6 +158,6 @@ def get_files():
 
             #update its own index with the coordinates
             with open(os.path.join(dirname, 'index.json'), 'wb') as f:
-                f.write(json.dumps({'layout': request.form['interest'], 'points': [{"x": 14, "y": 44, "ONE":"overview.mp3", "TWO": "overview2.mp3" }, {"x": 14, "y": 84}]}))
+                f.write(json.dumps({'layout': request.form['interest'], 'points': []}))
 
             return redirect(url_for('get_files'))
