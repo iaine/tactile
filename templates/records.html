@@ -1,5 +1,9 @@
 <!doctype html>
+<head>
     <title>List of Records</title>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
     <div id="records">
         <ul>
     {% for record in records %}
@@ -25,4 +29,5 @@
       <input type=submit value=Upload>
     </form>
  </div>
+</body>
 </html>
