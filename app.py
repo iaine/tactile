@@ -37,7 +37,7 @@ def query_picture_position():
     '''
        Place holder
     '''
-    return render_template('touch.html')
+    return redirect('/record')
     
 def allowed_file(filename, extension):
     return '.' in filename and \
