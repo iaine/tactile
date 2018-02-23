@@ -38,6 +38,18 @@ def query_picture_position():
        Place holder
     '''
     return redirect('/record')
+
+@app.route('/json')
+def query_index_json():
+    '''
+       Gets the index of files in JSON format
+    '''
+    list_records = []
+    for record in os.listdir(app.config['IMAGE_UPLOAD_FOLDER']):
+        spl_record = record.split('/')
+        list_records.append(spl_record[len(spl_record)-1])
+
+    return json.dumps({ 'records':list_records})
     
 def allowed_file(filename, extension):
     return '.' in filename and \
