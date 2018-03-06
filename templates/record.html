@@ -49,7 +49,6 @@ function mark_image(coords) {
   for (var i in coords) {
     let _tmpwidth = width * coords[i].x;
     let _tmpheight = height * coords[i].y;
-    console.log("tmp " + _tmpwidth);
     coord.push(coords[i])
     ctx.beginPath();
     ctx.arc(_tmpwidth, _tmpheight, 10, 0, 2 * Math.PI, false);
@@ -64,13 +63,10 @@ function mark_image(coords) {
 function set_xy(evt) {
 
   coord.push({'x': evt.clientX, 'y': evt.clientY});
-  console.log('x ' + evt.clientX);
-  console.log('y ' + evt.clientY);
+
   var _width = (evt.clientX/width);
   var _height = (evt.clientY/height);
   mark_image(coord);
-  console.log("coordinates");
-  console.log(coord);
 
   //var x = document.getElementById("img_load");
   {% if layout == '"portrait"' %}
@@ -78,6 +74,7 @@ function set_xy(evt) {
   {% else %}
     var x = document.getElementById("land_img_load");
   {% endif %}
+
   var createform = document.createElement('form'); // Create New Element Form
   createform.setAttribute("action", ""); // Setting Action Attribute on Form
   createform.setAttribute("method", "post"); // Setting Method Attribute on Form
