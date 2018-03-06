@@ -1,12 +1,17 @@
 <head>
-<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+<link rel=stylesheet type=text/css href="..{{ url_for('static', filename='style.css') }}">
 </head>
 {% block body %}
+{% if layout == '"portrait"' %}
+  <div id="port_img_load"></div>
+{% else %}
+  <div id="land_img_load"></div>
+{% endif %}
 <div class="outsideWrapper" >
     <div class="insideWrapper">
       <canvas class="coveringCanvas" id='myCanvas'></canvas>
 <div style='display:none'>
-  <img class="coveredImage" id="img_src" src="../../{{record}}">
+  <img class="coveredImage" id="img_src" src="glam/../../{{record}}">
 </div>
 <script type="text/javascript">
 {% if layout == '"portrait"' %}
@@ -20,7 +25,6 @@ var height = 521;
 </div>
 <div>
 
-<div id="img_load"></div>
 <script type="text/javascript">
 var coord = Array();
 var img = document.getElementById("img_src");
@@ -34,7 +38,7 @@ function mark_image(coords) {
   imageObj.onload = function() {
     ctx.drawImage(this ,0,0, width, height);
   };
-  imageObj.src = "../../{{record}}";  
+  imageObj.src = "glam/../../{{record}}";  
   cnvs.style.position = "absolute";
   cnvs.style.left = img.offsetLeft + "px";
   cnvs.style.top = img.offsetTop + "px";
@@ -45,8 +49,8 @@ function mark_image(coords) {
   for (var i in coords) {
     let _tmpwidth = width * coords[i].x;
     let _tmpheight = height * coords[i].y;
-
-    //coord.push(coords[i])
+    console.log("tmp " + _tmpwidth);
+    coord.push(coords[i])
     ctx.beginPath();
     ctx.arc(_tmpwidth, _tmpheight, 10, 0, 2 * Math.PI, false);
     ctx.lineWidth = 3;
@@ -60,11 +64,20 @@ function mark_image(coords) {
 function set_xy(evt) {
 
   coord.push({'x': evt.clientX, 'y': evt.clientY});
+  console.log('x ' + evt.clientX);
+  console.log('y ' + evt.clientY);
   var _width = (evt.clientX/width);
   var _height = (evt.clientY/height);
   mark_image(coord);
+  console.log("coordinates");
+  console.log(coord);
 
-  var x = document.getElementById("img_load");
+  //var x = document.getElementById("img_load");
+  {% if layout == '"portrait"' %}
+    var x = document.getElementById("port_img_load");
+  {% else %}
+    var x = document.getElementById("land_img_load");
+  {% endif %}
   var createform = document.createElement('form'); // Create New Element Form
   createform.setAttribute("action", ""); // Setting Action Attribute on Form
   createform.setAttribute("method", "post"); // Setting Method Attribute on Form
@@ -106,7 +119,8 @@ function set_xy(evt) {
   createform.appendChild(submitelement);
 
   x.appendChild(createform);
-
+  console.log("X element");
+  
 }
 
 //document.addEventListener("click", set_xy);
