@@ -84,21 +84,23 @@ def upload_file(uid):
     if request.method == 'POST':
         # check if the post request has the file part
         if not request.files:
-            print("no file")
             flash('No file part')
             return redirect(request.url)
-        file = request.files['desc']
+        descfile = request.files['desc']
+        detfile = request.files['detail']
    
         # if user does not select file, browser also
         # submit a empty part without filename
-        if file.filename == '':
+        if descfile == '' and detfile == '':
             flash('No selected file')
             return redirect(request.url)
-        if file and allowed_file(file.filename, ALLOWED_EXTENSIONS_AUDIO):
+        if allowed_file(detfile.filename, ALLOWED_EXTENSIONS_AUDIO) and allowed_file(descfile.filename, ALLOWED_EXTENSIONS_AUDIO):
             dirname = os.path.join(app.config['IMAGE_UPLOAD_FOLDER'], uid)
-            filename = secure_filename(file.filename)
+            descfilename = secure_filename(descfile.filename)
+            detfilename = secure_filename(detfile.filename)
             audir = os.path.join(dirname, "audio")
-            file.save(os.path.join(audir, filename))
+            descfile.save(os.path.join(audir, descfilename))
+            detfile.save(os.path.join(audir, detfilename))
       
             fname = None
             for f in os.listdir(dirname):
