@@ -23,14 +23,14 @@ app.config['IMAGE_UPLOAD_FOLDER'] = IMAGE_UPLOAD_FOLDER
 app.config['SECRET_KEY'] = '\x0bE\x85\xed\xb0\xa5\xda\x90\xb2\x94\xd0\x02\x96\xda=\xf1\x83w\x9ei\xc3#|\xa2'
 
 @app.before_first_request
-def startup():
-    '''
-       Check for index directory file existence
-    '''
-    indexdir = 'static/tiles/meta/'
-    if not os.path.exists(indexdir):
-        os.mkdir(indexdir)
-        open(indexdir + 'index.json', 'wb').close()
+#def startup():
+#    '''
+#       Check for index directory file existence
+#    '''
+#    indexdir = 'static/tiles/meta/'
+#    if not os.path.exists(indexdir):
+#        os.mkdir(indexdir)
+#        open(indexdir + 'index.json', 'wb').close()
 
 @app.route('/')
 def query_picture_position():
@@ -70,6 +70,14 @@ def get_json(uid):
         mimetype='application/json'
     )
     return response
+
+@app.route('/record/<uid>/audio/<audio>')
+def audio_proxy(uid, audio):
+    '''
+       Proxy to the file location
+    '''
+    file_uri = '/glam/static/tiles/' + uid + '/audio/' + audio 
+    return redirect(file_uri)
 
 @app.route('/record/<uid>', methods=['GET', 'POST'])
 def upload_file(uid):
@@ -150,6 +158,8 @@ def get_files():
             fname = filename.split('.')
             dirname = os.path.join(app.config['IMAGE_UPLOAD_FOLDER'], fname[0])
             os.mkdir(dirname)
+            audioname = os.path.join(dirname, "audio")
+            os.mkdir(audioname)
             file.save(dirname + '/' +filename)
 
             #update the index file
